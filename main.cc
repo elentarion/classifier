@@ -20,11 +20,14 @@ std::wstring read_file(const std::string& filename)
 
 int main(int argc, char** argv)
 {
+	std::locale locale("en_US.UTF-8");
+	std::wcout.imbue(locale);
+
 	nlp::sentence_tokenizer stokenizer;
 	nlp::word_tokenizer wtokenizer;
-	
+
 	std::wstring text = read_file("newyorktimes.txt");
-	
+
 	auto stokens = stokenizer(text);
 	for (auto its = stokens.begin(); its != stokens.end(); its++)
 	{
@@ -32,8 +35,8 @@ int main(int argc, char** argv)
 		for (auto itw = wtokens.begin(); itw != wtokens.end(); itw++)
 			std::wcout << (*itw) << std::endl;
 	}
-	
-	system("pause");
-	
+
+	std::cin.get();
+
 	return 0;
 }
