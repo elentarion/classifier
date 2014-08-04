@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <fstream>
+#include <map>
 
 #include "word_tokenizer.h"
 #include "sentence_tokenizer.h"
@@ -20,6 +21,14 @@ std::wstring read_file(const std::string& filename)
 
 int main(int argc, char** argv)
 {
+	std::map<std::wstring, bool> stopwords;
+	std::wifstream stopwordsFile("stopwords-en.txt", std::ios::in);
+	std::wstring line;
+	while (std::getline(stopwordsFile, line)) {
+		stopwords.insert(std::pair<std::wstring, bool>(line, true));
+	}
+	stopwordsFile.close();
+
 	std::locale locale("en_US.UTF-8");
 	std::wcout.imbue(locale);
 
