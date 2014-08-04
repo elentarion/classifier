@@ -29,9 +29,6 @@ int main(int argc, char** argv)
 	}
 	stopwordsFile.close();
 
-	std::locale locale("en_US.UTF-8");
-	std::wcout.imbue(locale);
-
 	nlp::sentence_tokenizer stokenizer;
 	nlp::word_tokenizer wtokenizer;
 
