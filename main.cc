@@ -20,9 +20,6 @@ std::wstring read_file(const std::string& filename)
 
 int main(int argc, char** argv)
 {
-	std::locale locale("en_US.UTF-8");
-	std::wcout.imbue(locale);
-
 	nlp::sentence_tokenizer stokenizer;
 	nlp::word_tokenizer wtokenizer;
 
