@@ -8,10 +8,11 @@
 #include "word_tokenizer.h"
 #include "sentence_tokenizer.h"
 
-std::wstring read_file(const std::string& filename)
+std::string read_file(const std::string& filename)
 {
-	std::wifstream in(filename, std::ios::in | std::ios::binary);
-	std::wstring contents;
+	std::ifstream in(filename, std::ios::in | std::ios::binary);
+	std::string contents;
+
 	in.seekg(0, std::ios::end);
 	contents.resize(in.tellg());
 	in.seekg(0, std::ios::beg);
@@ -22,10 +23,14 @@ std::wstring read_file(const std::string& filename)
 }
 
 int main(int argc, char** argv)
-{
-	boost::locale::generator gen;
-	std::locale loc = gen("en_US.UTF-8");
-	
+{	
+	namespace bl = boost::locale;
+	namespace blb = bl::boundary;
+
+	bl::generator gen;
+	std::locale loc = gen("en_US.UTF8");
+	std::locale::global(loc);
+
 	std::map<std::wstring, bool> stopwords;
 	std::wifstream stopwordsFile("data/stopwords-en.txt", std::ios::in);
 	std::wstring line;
@@ -34,22 +39,9 @@ int main(int argc, char** argv)
 	}
 	stopwordsFile.close();
 
-	nlp::sentence_tokenizer stokenizer;
-	nlp::word_tokenizer wtokenizer;
+	std::string text = read_file("data/newyorktimes.txt");
 
-	std::wstring text = read_file("data/newyorktimes.txt");
-
-	auto stokens = stokenizer(text);
-	for (auto its = stokens.begin(); its != stokens.end(); its++)
-	{
-		auto wtokens = wtokenizer(*its);
-		for (auto itw = wtokens.begin(); itw != wtokens.end(); itw++)
-		{
-			std::transform((*itw).begin(), (*itw).end(), (*itw).begin(), ::tolower);
-			if (stopwords.find((*itw)) == stopwords.end())
-				std::wcout << (*itw) << std::endl;
-		}
-	}
+	blb::ssegment_index map(blb::word, text.begin(), text.end(), gen("en_US.UTF8"));
 
 	std::cin.get();
 
