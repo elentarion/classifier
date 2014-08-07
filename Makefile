@@ -1,8 +1,8 @@
 CC=gcc
 CXX=g++
 RM=rm -f
-CPPFLAGS=-g -std=c++11 $(shell root-config --cflags)
-LDFLAGS=-g $(shell root-config --ldflags)
+CPPFLAGS=-g -std=c++11
+LDFLAGS=-g
 LDLIBS=-lboost_locale -lpugixml
 
 SRCS=src/main.cc src/stopwords.cc
